@@ -21,6 +21,11 @@ def test_index_merge_is_flagged() -> None:
     assert findings[0].severity is Severity.HIGH
 
 
+def test_multiline_index_merge_is_flagged() -> None:
+    findings = policy("diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1,5 @@\n+merged = left.merge(\n+    right,\n+    left_index=True,\n+    right_index=True,\n+)")
+    assert findings[0].severity is Severity.HIGH
+
+
 def test_secret_literal_is_critical() -> None:
     findings = policy('diff --git a/src/x.py b/src/x.py\n@@ -1 +1 @@\n+API_KEY = "not-a-real-secret-value"')
     assert findings[0].severity is Severity.CRITICAL
