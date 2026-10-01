@@ -10,8 +10,9 @@ REQUIRED_FILES = (
     "main.py", "requirements.txt", "README.md", "data/raw/.gitkeep", "data/processed/.gitkeep", "charts/.gitkeep", "report/.gitkeep",
     "src/__init__.py", "src/basics.py", "src/data_structures.py", "src/data_collection.py", "src/processor.py", "src/analysis.py",
     "notebooks/premier_league_analysis.ipynb", "tests/__init__.py", "docs/PROJECT_SCOPE.md", "docs/RESEARCH_QUESTIONS.md",
-    "docs/DATA_CONTRACT.md", "docs/DATA_SOURCES.md", "docs/DATA_RULES.md", "docs/ANALYSIS_PLAN.md", "docs/PROJECT_RULES.md",
-    ".github/pull_request_template.md", ".github/workflows/quality-check.yml",
+    "docs/DATA_CONTRACT.md", "docs/DATA_SOURCES.md", "docs/DATA_RULES.md", "docs/ANALYSIS_PLAN.md", "docs/PROJECT_RULES.md", "docs/AI_REVIEW.md",
+    "scripts/ai_review/__init__.py", "scripts/ai_review/reviewer.py", "scripts/ai_review/diff_parser.py", "scripts/ai_review/rule_loader.py", "scripts/ai_review/review_policy.py", "scripts/ai_review/models.py", "scripts/ai_review/github_output.py",
+    ".github/pull_request_template.md", ".github/workflows/quality-check.yml", ".github/workflows/ai-review.yml",
 )
 
 

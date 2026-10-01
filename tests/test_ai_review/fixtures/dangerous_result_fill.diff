@@ -1,0 +1,6 @@
+diff --git a/src/processor.py b/src/processor.py
+index 1111111..2222222 100644
+--- a/src/processor.py
++++ b/src/processor.py
+@@ -1,1 +1,1 @@
++df["FTHG"] = df["FTHG"].fillna(0)
