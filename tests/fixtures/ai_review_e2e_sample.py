@@ -1,18 +1,11 @@
 """TEST FIXTURE ONLY — NOT PRODUCTION CODE.
 
-This temporary E2E fixture deliberately contains unsafe patterns so the
-advisory pull-request reviewer can demonstrate its detections.
+Safe counterpart retained temporarily to validate advisory review updates.
 """
 
-df["FTHG"] = df["FTHG"].fillna(0)
+from pathlib import Path
 
-merged = left.merge(
-    right,
-    left_index=True,
-    right_index=True,
-)
 
-DATA_PATH = "C:\\Users\\Example\\Desktop\\football.csv"
-API_KEY = "TEST_FAKE_SECRET_DO_NOT_USE_12345"
+DATA_PATH = Path("data") / "raw" / "football.csv"
 
-# Correlation proves that shots cause wins.
+# Future analysis describes associations rather than causal claims.
