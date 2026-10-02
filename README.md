@@ -14,7 +14,7 @@ RQ1 home advantage; RQ2 team attacking performance; RQ3 half-time versus full-ti
 
 ## Planned Data Sources
 
-Web scraping is the planned collection method. FBref is the candidate primary source and Football-Data is supplementary/reference. Sources will be inspected in Day 2 before collection.
+Football-Data's EPL `E0.csv` files are the primary source for match-level results and statistics; they can be downloaded as CSV without an API key. FBref is a supplementary match-report source for manual cross-checks; only one 2023/24 match report has been inspected so far. Wikipedia's list of Premier League seasons is a supplementary source for season-level context, not match statistics. The initial target seasons are 2023/24, 2024/25, and 2025/26. See [data sources](docs/DATA_SOURCES.md) for URLs, source roles, and limitations.
 
 ## Planned Data Pipeline
 
@@ -39,4 +39,4 @@ Python, Pandas, NumPy, Matplotlib, Seaborn, Requests, Beautiful Soup, Jupyter, a
 
 ## Current Status
 
-**Day 1 – Project setup and data design.** No real data has been collected, scraped, cleaned, analyzed, or visualized.
+**Raw data collected.** Three verified Football-Data EPL CSVs are stored under `data/raw/`. The collector, source audit, and offline quality tests are implemented. Cleaning, analysis, charts, and the report remain to be completed.
