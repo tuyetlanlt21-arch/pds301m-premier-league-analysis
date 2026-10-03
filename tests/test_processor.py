@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 from pandas.api.types import is_datetime64_any_dtype, is_numeric_dtype
 
-from src.processor import FootballDataProcessor, REQUIRED_COLUMNS
+from src.processor import FootballDataProcessor, NUMERIC_COLUMNS, REQUIRED_COLUMNS
 
 
 def valid_records() -> list[dict[str, object]]:
@@ -55,6 +55,54 @@ def test_validate_data_accepts_complete_schema(processor: FootballDataProcessor)
     data = pd.DataFrame(valid_records())
 
     assert processor.validate_data(data) is data
+
+
+def test_validate_data_rejects_identical_home_and_away_teams(
+    processor: FootballDataProcessor,
+) -> None:
+    data = pd.DataFrame([valid_records()[0] | {"HomeTeam": "Arsenal", "AwayTeam": " Arsenal "}])
+
+    with pytest.raises(ValueError, match="HomeTeam and AwayTeam must be different"):
+        processor.validate_data(data)
+
+
+def test_validate_data_accepts_different_home_and_away_teams(
+    processor: FootballDataProcessor,
+) -> None:
+    data = pd.DataFrame(valid_records())
+
+    assert processor.validate_data(data) is data
+
+
+@pytest.mark.parametrize("numeric_column", NUMERIC_COLUMNS)
+def test_validate_data_rejects_negative_numeric_values(
+    processor: FootballDataProcessor, numeric_column: str
+) -> None:
+    data = pd.DataFrame([valid_records()[0] | {numeric_column: "-1"}])
+
+    with pytest.raises(ValueError, match=f"Numeric column {numeric_column} cannot contain negative values"):
+        processor.validate_data(data)
+
+
+def test_validate_data_accepts_zero_for_numeric_fields(processor: FootballDataProcessor) -> None:
+    record = valid_records()[0] | {column: "0" for column in NUMERIC_COLUMNS}
+    data = pd.DataFrame([record])
+
+    assert processor.validate_data(data) is data
+
+
+def test_validate_data_preserves_missing_numeric_values(
+    processor: FootballDataProcessor,
+) -> None:
+    record = valid_records()[0] | {column: None for column in NUMERIC_COLUMNS}
+    data = pd.DataFrame([record])
+    original = data.copy(deep=True)
+
+    validated = processor.validate_data(data)
+
+    assert validated is data
+    pd.testing.assert_frame_equal(data, original)
+    assert data[list(NUMERIC_COLUMNS)].isna().all().all()
 
 
 def test_validate_data_rejects_missing_required_column(
