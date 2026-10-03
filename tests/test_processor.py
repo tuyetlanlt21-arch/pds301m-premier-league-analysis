@@ -169,3 +169,81 @@ def test_normalize_team_names_strips_aliases_and_preserves_unknown_names(
     assert normalized.loc[0, "AwayTeam"] == "Arsenal"
     assert data.loc[0, "HomeTeam"] == "  Man City "
     assert data.loc[0, "AwayTeam"] == "  Arsenal  "
+
+
+def feature_records() -> pd.DataFrame:
+    home_win = valid_records()[0] | {
+        "FTHG": 2,
+        "FTAG": 1,
+        "FTR": "H",
+        "HS": 12,
+        "AS": 8,
+        "HST": 5,
+        "AST": 3,
+    }
+    draw = home_win | {
+        "Date": "12/08/2023",
+        "FTHG": 2,
+        "FTAG": 2,
+        "FTR": "D",
+        "HS": 9,
+        "AS": 9,
+        "HST": 4,
+        "AST": 4,
+    }
+    away_win = home_win | {
+        "Date": "13/08/2023",
+        "FTHG": 1,
+        "FTAG": 3,
+        "FTR": "A",
+        "HS": 7,
+        "AS": 14,
+        "HST": 2,
+        "AST": 6,
+    }
+    return pd.DataFrame([home_win, draw, away_win])
+
+
+def test_create_features_adds_all_documented_derived_columns(
+    processor: FootballDataProcessor,
+) -> None:
+    featured = processor.create_features(feature_records())
+
+    assert featured["total_goals"].tolist() == [3, 4, 4]
+    assert featured["goal_difference"].tolist() == [1, 0, -2]
+    assert featured["result_label"].tolist() == ["Home Win", "Draw", "Away Win"]
+    assert featured["high_scoring"].tolist() == [False, True, True]
+    assert featured["shot_difference"].tolist() == [4, 0, -7]
+    assert featured["sot_difference"].tolist() == [2, 0, -4]
+
+
+def test_create_features_does_not_mutate_input(processor: FootballDataProcessor) -> None:
+    data = feature_records()
+    original = data.copy(deep=True)
+
+    processor.create_features(data)
+
+    pd.testing.assert_frame_equal(data, original)
+
+
+def test_export_processed_data_creates_parent_and_omits_index(
+    processor: FootballDataProcessor, tmp_path
+) -> None:
+    destination = tmp_path / "processed" / "matches.csv"
+    featured = processor.create_features(feature_records())
+
+    processor.export_processed_data(featured, destination)
+
+    exported = pd.read_csv(destination)
+    assert destination.is_file()
+    assert "Unnamed: 0" not in exported.columns
+    assert exported["total_goals"].tolist() == [3, 4, 4]
+
+
+def test_export_processed_data_rejects_raw_data_destination(
+    processor: FootballDataProcessor,
+) -> None:
+    raw_destination = Path(__file__).resolve().parents[1] / "data" / "raw" / "new.csv"
+
+    with pytest.raises(ValueError, match="data/raw"):
+        processor.export_processed_data(feature_records(), raw_destination)

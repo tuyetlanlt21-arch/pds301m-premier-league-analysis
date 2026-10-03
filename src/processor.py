@@ -85,10 +85,24 @@ class FootballDataProcessor:
             normalized[column] = normalized[column].str.strip().replace(TEAM_NAME_MAPPING)
         return normalized
 
-    def create_features(self, data: Any) -> Any:
-        """Reserve documented feature engineering."""
-        raise NotImplementedError("Processing begins after data collection.")
+    def create_features(self, data: pd.DataFrame) -> pd.DataFrame:
+        """Return a copy with the documented match-analysis features."""
+        featured = data.copy()
+        featured["total_goals"] = featured["FTHG"] + featured["FTAG"]
+        featured["goal_difference"] = featured["FTHG"] - featured["FTAG"]
+        featured["result_label"] = featured["FTR"].map(
+            {"H": "Home Win", "D": "Draw", "A": "Away Win"}
+        )
+        featured["high_scoring"] = featured["total_goals"] >= 4
+        featured["shot_difference"] = featured["HS"] - featured["AS"]
+        featured["sot_difference"] = featured["HST"] - featured["AST"]
+        return featured
 
-    def export_processed_data(self, data: Any, path: Path) -> None:
-        """Reserve export of processed data to a repository-relative path."""
-        raise NotImplementedError("Processing begins after data collection.")
+    def export_processed_data(self, data: pd.DataFrame, path: Path) -> None:
+        """Export processed data without allowing writes to immutable raw data."""
+        destination = path.resolve()
+        raw_directory = (Path(__file__).resolve().parents[1] / "data" / "raw").resolve()
+        if raw_directory == destination.parent or raw_directory in destination.parents:
+            raise ValueError("Processed data cannot be exported under data/raw/.")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        data.to_csv(destination, index=False)
