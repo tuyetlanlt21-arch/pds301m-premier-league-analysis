@@ -247,3 +247,27 @@ def test_export_processed_data_rejects_raw_data_destination(
 
     with pytest.raises(ValueError, match="data/raw"):
         processor.export_processed_data(feature_records(), raw_destination)
+
+
+def test_processor_methods_complete_the_raw_to_processed_workflow(
+    processor: FootballDataProcessor, tmp_path
+) -> None:
+    raw_path = tmp_path / "raw" / "matches.csv"
+    raw_path.parent.mkdir()
+    pd.DataFrame(valid_records()).to_csv(raw_path, index=False)
+    raw_bytes = raw_path.read_bytes()
+    processed_path = tmp_path / "processed" / "matches.csv"
+
+    loaded = processor.load_data(raw_path)
+    validated = processor.validate_data(loaded)
+    cleaned = processor.clean_data(validated)
+    normalized = processor.normalize_team_names(cleaned)
+    featured = processor.create_features(normalized)
+    processor.export_processed_data(featured, processed_path)
+
+    exported = pd.read_csv(processed_path)
+    assert raw_path.read_bytes() == raw_bytes
+    assert exported.loc[0, "HomeTeam"] == "Manchester City"
+    assert exported.loc[0, "total_goals"] == 3
+    assert exported.loc[0, "result_label"] == "Home Win"
+    assert "Unnamed: 0" not in exported.columns
