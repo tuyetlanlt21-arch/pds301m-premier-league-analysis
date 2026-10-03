@@ -56,6 +56,21 @@ class FootballDataProcessor:
         for column in IDENTITY_COLUMNS:
             if data[column].isna().any():
                 raise ValueError(f"Fixture identity column {column} contains missing values.")
+        same_team = data["HomeTeam"].astype(str).str.strip().eq(
+            data["AwayTeam"].astype(str).str.strip()
+        )
+        if same_team.any():
+            raise ValueError("HomeTeam and AwayTeam must be different for every fixture.")
+
+        for column in NUMERIC_COLUMNS:
+            values = data[column]
+            present = values.notna() & values.astype("string").str.strip().ne("")
+            numeric_values = pd.to_numeric(values.where(present), errors="coerce")
+            invalid = present & numeric_values.isna()
+            if invalid.any():
+                raise ValueError(f"Numeric column {column} contains a non-numeric value.")
+            if numeric_values.lt(0).any():
+                raise ValueError(f"Numeric column {column} cannot contain negative values.")
         return data
 
     def clean_data(self, data: pd.DataFrame) -> pd.DataFrame:
