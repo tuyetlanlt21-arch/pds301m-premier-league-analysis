@@ -41,13 +41,55 @@ def analyze_home_advantage(df: pd.DataFrame) -> pd.Series:
     
     return win_rates
 
-def analyze_team_performance(data: Any) -> Any:
-    """Reserve RQ2 analysis."""
-    _not_ready()
+def analyze_team_performance(df: pd.DataFrame) -> pd.Series:
+    """
+    RQ2: Tính tổng số bàn thắng của từng đội và vẽ biểu đồ Top 10 đội ghi bàn nhiều nhất.
+    """
+    # Tính tổng bàn thắng khi đá sân nhà và sân khách
+    home_goals = df.groupby('HomeTeam')['FTHG'].sum().reset_index()
+    home_goals.columns = ['Team', 'Goals']
+    
+    away_goals = df.groupby('AwayTeam')['FTAG'].sum().reset_index()
+    away_goals.columns = ['Team', 'Goals']
+    
+    # Gộp lại để lấy tổng toàn giải
+    total_goals = pd.concat([home_goals, away_goals]).groupby('Team')['Goals'].sum().sort_values(ascending=False)
+    
+    # Vẽ biểu đồ Bar chart nằm ngang cho Top 10
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=total_goals.head(10).values, y=total_goals.head(10).index, hue=total_goals.head(10).index, palette='viridis', legend=False)
+    
+    plt.title('Top 10 Đội Ghi Nhiều Bàn Thắng Nhất', fontsize=14, pad=15)
+    plt.xlabel('Tổng số bàn thắng', fontsize=12)
+    plt.ylabel('Đội bóng', fontsize=12)
+    
+    os.makedirs('charts', exist_ok=True)
+    plt.tight_layout()
+    plt.savefig('charts/top_scoring_teams.png', dpi=300)
+    plt.close()
+    
+    return total_goals
 
-def analyze_goal_distribution(data: Any) -> Any:
-    """Reserve RQ4 analysis."""
-    _not_ready()
+def analyze_goal_distribution(df: pd.DataFrame) -> None:
+    """
+    RQ4: Vẽ biểu đồ Histogram phân bố tổng số bàn thắng trong các trận đấu.
+    """
+    # Tạo cột tổng bàn thắng nếu chưa có
+    if 'total_goals' not in df.columns:
+        df['total_goals'] = df['FTHG'] + df['FTAG']
+        
+    plt.figure(figsize=(8, 5))
+    sns.histplot(df['total_goals'], bins=range(0, int(df['total_goals'].max()) + 2), kde=True, color='teal')
+    
+    plt.title('Phân bố Tổng số Bàn thắng mỗi Trận đấu', fontsize=14, pad=15)
+    plt.xlabel('Tổng số bàn thắng', fontsize=12)
+    plt.ylabel('Số lượng trận đấu', fontsize=12)
+    plt.xticks(range(0, int(df['total_goals'].max()) + 1))
+    
+    os.makedirs('charts', exist_ok=True)
+    plt.tight_layout()
+    plt.savefig('charts/goal_distribution_hist.png', dpi=300)
+    plt.close()
 
 def analyze_halftime_fulltime(data: Any) -> Any:
     """Reserve RQ3 analysis."""
