@@ -91,10 +91,54 @@ def analyze_goal_distribution(df: pd.DataFrame) -> None:
     plt.savefig('charts/goal_distribution_hist.png', dpi=300)
     plt.close()
 
-def analyze_halftime_fulltime(data: Any) -> Any:
-    """Reserve RQ3 analysis."""
-    _not_ready()
+def analyze_halftime_fulltime(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    RQ3: Phân tích mối liên hệ giữa kết quả hiệp 1 (HTR) và kết quả chung cuộc (FTR).
+    """
+    # Lập bảng chéo đếm số lượng trận đấu (H: Home, D: Draw, A: Away)
+    ht_ft_crosstab = pd.crosstab(df['HTR'], df['FTR'], 
+                                 rownames=['Half-Time (HTR)'], 
+                                 colnames=['Full-Time (FTR)'])
+    
+    # Sắp xếp lại thứ tự cột/hàng cho chuẩn (Home, Draw, Away)
+    order = ['H', 'D', 'A']
+    ht_ft_crosstab = ht_ft_crosstab.reindex(index=order, columns=order)
+    
+    plt.figure(figsize=(7, 5))
+    sns.heatmap(ht_ft_crosstab, annot=True, fmt='d', cmap='Blues')
+    
+    plt.title('Mối liên hệ giữa Kết quả Hiệp 1 và Chung cuộc', fontsize=14, pad=15)
+    
+    os.makedirs('charts', exist_ok=True)
+    plt.tight_layout()
+    plt.savefig('charts/halftime_fulltime_heatmap.png', dpi=300)
+    plt.close()
+    
+    return ht_ft_crosstab
 
-def analyze_match_statistics(data: Any) -> Any:
-    """Reserve RQ5 analysis."""
-    _not_ready()
+def analyze_match_statistics(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    RQ5: Vẽ Heatmap thể hiện mức độ tương quan giữa các chỉ số thống kê trong trận.
+    """
+    # Gộp các chỉ số sân nhà và sân khách để phân tích tổng thể
+    stats_df = pd.DataFrame()
+    stats_df['Tổng Bàn thắng'] = df['FTHG'] + df['FTAG']
+    stats_df['Tổng Cú sút'] = df['HS'] + df['AS']
+    stats_df['Sút trúng đích'] = df['HST'] + df['AST']
+    stats_df['Phạt góc'] = df['HC'] + df['AC']
+    stats_df['Phạm lỗi'] = df['HF'] + df['AF']
+    
+    # Tính ma trận tương quan (Pearson correlation)
+    corr_matrix = stats_df.corr()
+    
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, fmt='.2f')
+    
+    plt.title('Ma trận Tương quan giữa các Chỉ số Thống kê', fontsize=14, pad=15)
+    
+    os.makedirs('charts', exist_ok=True)
+    plt.tight_layout()
+    plt.savefig('charts/match_stats_correlation.png', dpi=300)
+    plt.close()
+    
+    return corr_matrix
