@@ -1,9 +1,6 @@
-pandas
 numpy
+pandas
+pytest
 matplotlib
 seaborn
 requests
-beautifulsoup4
-lxml
-jupyter
-pytest
