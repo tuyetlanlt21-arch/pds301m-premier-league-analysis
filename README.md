@@ -1,4 +1,4 @@
-# Premier League Match Analysis (P6)
+# Premier League Match Analysis 
 
 A PDS301M project describing Premier League match outcomes, team attacking performance, half-time to full-time results, goal distributions, and match-statistic relationships. The analysis covers the season CSV files placed in `data/raw/`; it does not assume a fixed season range or hard-code findings.
 
