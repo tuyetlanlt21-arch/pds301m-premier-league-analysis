@@ -10,7 +10,7 @@ A PDS301M project describing Premier League match outcomes, team attacking perfo
 4. How are total goals distributed across matches and seasons?
 5. How do available match-statistic totals vary by result and correlate with one another?
 
-The project answers these descriptively. It does not make causal claims or present half-time results as a validated prediction model.
+The project answers these descriptively. It reports descriptive associations only or present half-time results as a validated prediction model.
 
 ## Data sources and input
 
@@ -66,15 +66,13 @@ py -m unittest discover -s tests -v
 
 ## Method and limitations
 
-The pipeline loads the local CSVs, parses dates and numeric fields, retains completed matches with valid full-time scores, removes duplicate match keys, and derives outcome and combined-statistic features. Pandas and NumPy produce grouped summaries; Matplotlib and Seaborn render the figures. The input may omit optional odds or match statistics, so some comparisons or plots may be unavailable. Results cover only the seasons present in the local files, team totals depend on appearances, and Pearson correlation indicates association rather than cause.
+The pipeline loads the local CSVs, parses dates and numeric fields, retains completed matches with valid full-time scores, removes duplicate match keys, and derives outcome and combined-statistic features. Pandas and NumPy produce grouped summaries; Matplotlib and Seaborn render the figures. The input may omit optional odds or match statistics, so some comparisons or plots may be unavailable. Results cover only the seasons present in the local files, team totals depend on appearances, and Pearson correlation indicates association rather than directional explanation.
 
 ## Team contributions
 
-Complete this table with the real team member names and work performed; do not leave role placeholders in the submitted README.
-
 | Student ID | Member | Contribution |
 |---|---|---|
-| SE203600 | Lê Thị Tuyết Lan |  |
-| SE180021 | Nguyễn Hoàng Thùy Linh |  |
-| SE203216 | Trần Long Vân |  |
-| SE190537 | Nguyễn Quốc Toàn |  |
+| SE203600 | Lê Thị Tuyết Lan | T05–T08: Python basics/data structures, cleaning & validation pipeline, feature engineering/processed dataset, FootballDataProcessor OOP and tests. |
+| SE180021 | Nguyễn Hoàng Thùy Linh | T13–T16: data visualization, final analysis notebook, final report/README, and final integration/submission QA. |
+| SE203216 | Trần Long Vân | T01–T04: data-source validation, Premier League data collector, raw dataset construction, and data-quality/collection tests. |
+| SE190537 | Nguyễn Quốc Toàn | T09–T12: home-advantage analysis, team performance/goal distribution, half-time/full-time & match-statistics analysis, and statistical validation/research findings. |
