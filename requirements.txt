@@ -1,3 +1,6 @@
 numpy
 pandas
 pytest
+matplotlib
+seaborn
+requests
