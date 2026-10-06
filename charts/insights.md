@@ -1,7 +1,7 @@
 # T13 — Visualization insights
 
 Based on 1,140 completed matches from 2023/24, 2024/25, 2025/26.
-Each note describes the values shown in the chart; correlations are associations and do not establish cause.
+Each note describes the values shown in the chart; correlations are associations and do not establish directionality.
 
 ## RQ1 — Match outcomes
 
