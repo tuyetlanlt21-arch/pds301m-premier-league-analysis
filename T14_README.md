@@ -1,10 +1,10 @@
-# T14 — Final Analysis Notebook
+# Final Analysis Notebook
 
 Notebook: `notebooks/premier_league_analysis.ipynb`
 
 The notebook follows the P6 analysis story: Introduction, RQs, Sources, Basics, Data Structures, Collection, Understanding, Cleaning, Features, NumPy, Pandas RQ1–RQ5, Visualization, Findings, Limitations, and Conclusion. Reusable CSV loading, cleaning, feature engineering, and chart logic is kept in `src/` and `scripts/`.
 
-## Files in the T14 package
+## Files in the package
 
 - `notebooks/premier_league_analysis.ipynb` — complete analysis notebook.
 - `src/data_pipeline.py` — reusable offline CSV loading, data checks, cleaning, features, and basic/data-structure helpers.
