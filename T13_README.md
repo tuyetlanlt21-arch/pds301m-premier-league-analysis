@@ -1,4 +1,4 @@
-# T13 — Premier League Data Visualization
+# Premier League Data Visualization
 
 This implementation creates eight charts tied to the project's research questions:
 
