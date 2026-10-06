@@ -1,4 +1,4 @@
-# T16 — Final Integration & Submission QA
+# Final Integration & Submission QA
 
 **Status:** The code and documentation checks below pass. Final submission sign-off is pending because this QA workspace has no collected season CSVs and no native Jupyter/IPython runtime for a fresh Run All against the team's data.
 
