@@ -108,8 +108,10 @@ class ReportTests(unittest.TestCase):
 
         self.assertIn("2 completed matches", report)
         self.assertIn("home wins were 50.0%", report)
-        self.assertIn("SE203600 | Lê Thị Tuyết Lan |  |", report)
-        self.assertIn("SE190537 | Nguyễn Quốc Toàn |  |", report)
+        self.assertIn("SE203216 | Trần Long Vân | T01–T04:", report)
+        self.assertIn("SE203600 | Lê Thị Tuyết Lan | T05–T08:", report)
+        self.assertIn("SE190537 | Nguyễn Quốc Toàn | T09–T12:", report)
+        self.assertIn("SE180021 | Nguyễn Hoàng Thùy Linh | T13–T16:", report)
         self.assertNotIn("[Member name]", report)
 
 
