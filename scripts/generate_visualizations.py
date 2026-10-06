@@ -114,7 +114,7 @@ def write_visualization_insights(
         "# T13 — Visualization insights",
         "",
         f"Based on {total_matches:,} completed matches from {', '.join(sorted(matches['Season'].astype(str).unique()))}.",
-        "Each note describes the values shown in the chart; correlations are associations and do not establish cause.",
+        "Each note describes the values shown in the chart; correlations are associations and do not establish directionality.",
         "",
     ]
     for filename, heading, insight in entries:
