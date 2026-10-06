@@ -15,7 +15,7 @@
 | T13 chart preservation | PASS with temporary test fixtures | SHA-256 hashes of all 8 T13 chart files were unchanged after running the T15 report command. |
 | Secrets and machine-specific paths | PASS | Static scan of project source, notebook, README files, and dependency files found no credentials or machine-specific absolute paths. |
 | Fresh native Jupyter Run All on team data | NOT VERIFIED HERE | No CSV files are present in `data/raw/`; this QA runtime also has no IPython/nbclient. The user previously ran the notebook successfully in VS Code, but that does not replace the requested final fresh run. |
-| Git/PR readiness | NOT VERIFIED HERE | This workspace is a merged source folder without a Git checkout, so repository status, branch integration, and PR checks cannot be inspected here. |
+| Git/PR readiness | PASS | PR #15 is open from `t13-t16-final-integration` to `main`, GitHub reports it mergeable, and the `Quality Check` workflow completed successfully. |
 
 The analysis code reads saved CSV snapshots and does not download or alter raw data. Descriptive findings apply only to the seasons supplied by the team. Missing optional statistics remain missing. No findings have been hard-coded into the report generator.
 
@@ -39,7 +39,7 @@ The analysis code reads saved CSV snapshots and does not download or alter raw d
 5. Run `py -m scripts.generate_final_report`, then confirm `report/final_report.md` agrees with the notebook findings and limitations.
 6. Review the merged diff and have all team members participate in the final review. Fill the contribution table in README with the real work completed before submission.
 
-Do not mark the PR ready until these local-data, notebook, report-review, and team-review checks pass. No commit or PR was created in this QA workspace.
+GitHub-side PR readiness has been verified. Do not merge until the remaining local-data notebook Run All and final team review confirmations are completed.
 
 ## Team review confirmations
 
