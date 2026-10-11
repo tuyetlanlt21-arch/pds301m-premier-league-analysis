@@ -15,7 +15,7 @@ Pandas groups match outcomes, teams, seasons, and statistics; NumPy summarizes g
 ## Findings
 
 - **Home advantage:** home wins were 43.2%, draws 24.5%, and away wins 32.4% of completed matches.
-- **Team performance:** **Man City** scored the most goals (245). Liverpool led in shots (2,026); Man City led in shots on target (700).
+- **Team performance:** **Manchester City** scored the most goals (245). Liverpool led in shots (2,026); Manchester City led in shots on target (700).
 - **Half-time to full-time:** The most frequent half-time to full-time transition was **Home win → Home win** (300 matches).
 - **Goals:** mean 2.99, median 3.0 total goals per match. 2023/24 had the highest seasonal mean (3.28).
 - **Match statistics:** The strongest pairwise correlation was between Total shots and Shots on target (Pearson r = 0.61). Across matches with shot data, total shots and total goals had Pearson r = 0.22.

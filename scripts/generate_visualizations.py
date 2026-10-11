@@ -16,15 +16,17 @@ CHARTS_DIR = ROOT / "charts"
 
 def load_completed_matches() -> pd.DataFrame:
     """Load, validate, clean, normalize, and combine all collected seasons."""
-    from src.data_pipeline import clean_matches, create_features, load_raw_csvs
+    from src.processor import FootballDataProcessor
 
-    raw, paths = load_raw_csvs(RAW_DATA_DIR)
-    clean, counts = clean_matches(raw)
+    processor = FootballDataProcessor()
+    raw, paths = processor.load_csvs(RAW_DATA_DIR)
+    clean = processor.clean_data(raw)
     print(f"Loaded {len(paths)} season CSV file(s)")
-    print(f"Retained {counts['clean_rows']:,} completed matches after cleaning")
+    print(f"Retained {len(clean):,} completed matches after cleaning")
     if clean.empty:
         raise ValueError(f"No completed matches found in {RAW_DATA_DIR}.")
-    return create_features(clean)
+    clean = processor.normalize_team_names(clean)
+    return processor.create_features(clean)
 
 
 def write_visualization_insights(

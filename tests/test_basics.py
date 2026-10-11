@@ -2,7 +2,12 @@
 
 import pytest
 
-from src.basics import calculate_points, calculate_total_goals, classify_goal_match, map_result
+from src.basics import (
+    calculate_points,
+    calculate_total_goals,
+    classify_goal_match,
+    map_result,
+)
 
 
 def test_basic_helpers() -> None:

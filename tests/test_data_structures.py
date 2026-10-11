@@ -7,7 +7,6 @@ from src.data_structures import (
     get_unique_team_names,
 )
 
-
 MATCH_RECORDS = [
     {
         "Season": "2023/24",

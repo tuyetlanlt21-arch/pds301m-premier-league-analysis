@@ -13,7 +13,7 @@ Each note describes the values shown in the chart; correlations are associations
 
 ![RQ2 — Team attacking performance](top_scoring_teams.png)
 
-**Evidence-based insight:** Man City scored the most goals across the included seasons: 245 in total.
+**Evidence-based insight:** Manchester City scored the most goals across the included seasons: 245 in total.
 
 ## RQ3 — Half-time to full-time
 

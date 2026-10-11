@@ -3,28 +3,32 @@
 from __future__ import annotations
 
 from pathlib import Path
-from tempfile import TemporaryDirectory
 
 from src.analysis import generate_all_visualizations
-from src.data_pipeline import clean_matches, create_features, load_raw_csvs
+from src.processor import FootballDataProcessor
 from src.reporting import write_final_report
 
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = ROOT / "report" / "final_report.md"
+CHARTS_PATH = ROOT / "charts"
 
 
 def main() -> None:
-    raw, raw_files = load_raw_csvs(ROOT / "data" / "raw")
-    cleaned, clean_counts = clean_matches(raw)
+    processor = FootballDataProcessor()
+    raw, raw_files = processor.load_csvs(ROOT / "data" / "raw")
+    cleaned = processor.clean_data(raw)
     if cleaned.empty:
         raise ValueError("No completed matches were found in data/raw/.")
-    matches = create_features(cleaned)
-    print(f"Loaded {len(raw_files)} season CSV file(s); retained {clean_counts['clean_rows']:,} completed matches")
-    # Compute the report's chart summaries in a temporary folder so existing
-    # T13 chart files are not replaced by this T15 report command.
-    with TemporaryDirectory(prefix="p6_t15_report_") as temporary_charts:
-        summaries = generate_all_visualizations(matches, Path(temporary_charts))
+    cleaned = processor.normalize_team_names(cleaned)
+    matches = processor.create_features(cleaned)
+    processed_dir = ROOT / "data" / "processed"
+    cleaned_path, team_summary_path = processor.export_results(cleaned, processed_dir)
+    print(f"Loaded {len(raw_files)} season CSV file(s); retained {len(cleaned):,} completed matches")
+    print(f"Wrote processed data: {cleaned_path.relative_to(ROOT)}, {team_summary_path.relative_to(ROOT)}")
+    # Refresh the P6 chart suite in the canonical charts directory so the
+    # report, charts, and processed CSVs are generated from the same rows.
+    summaries = generate_all_visualizations(matches, CHARTS_PATH)
     report_path = write_final_report(matches, summaries, REPORT_PATH)
     print(f"Wrote data-backed report: {report_path.relative_to(ROOT)}")
 

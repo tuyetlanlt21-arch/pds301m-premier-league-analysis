@@ -12,27 +12,38 @@ def policy(diff: str):
 
 
 def test_missing_goals_are_not_filled_with_zero() -> None:
-    findings = policy('diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1 @@\n+df["FTHG"] = df["FTHG"].fillna(0)')
+    findings = policy(
+        'diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1 @@\n+df["FTHG"] = df["FTHG"].fillna(0)'
+    )
     assert findings[0].severity is Severity.HIGH
 
 
 def test_index_merge_is_flagged() -> None:
-    findings = policy("diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1 @@\n+merged = left.merge(right, left_index=True, right_index=True)")
+    findings = policy(
+        "diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1 @@\n+merged = left.merge(right, left_index=True, right_index=True)"
+    )
     assert findings[0].severity is Severity.HIGH
 
 
 def test_multiline_index_merge_is_flagged() -> None:
-    findings = policy("diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1,5 @@\n+merged = left.merge(\n+    right,\n+    left_index=True,\n+    right_index=True,\n+)")
+    findings = policy(
+        "diff --git a/src/processor.py b/src/processor.py\n@@ -1 +1,5 @@\n+merged = left.merge(\n+    right,\n+    left_index=True,\n+    right_index=True,\n+)"
+    )
     assert findings[0].severity is Severity.HIGH
 
 
 def test_secret_literal_is_critical() -> None:
-    findings = policy('diff --git a/src/x.py b/src/x.py\n@@ -1 +1 @@\n+API_KEY = "not-a-real-secret-value"')
+    findings = policy(
+        'diff --git a/src/x.py b/src/x.py\n@@ -1 +1 @@\n+API_KEY = "not-a-real-secret-value"'
+    )
     assert findings[0].severity is Severity.CRITICAL
 
 
 def test_high_finding_is_advisory_blocked_result() -> None:
-    review = run('diff --git a/src/x.py b/src/x.py\n@@ -1 +1 @@\n+df["FTAG"] = df["FTAG"].fillna(0)', mock=True)
+    review = run(
+        'diff --git a/src/x.py b/src/x.py\n@@ -1 +1 @@\n+df["FTAG"] = df["FTAG"].fillna(0)',
+        mock=True,
+    )
     assert review.result is ReviewResult.BLOCKED
 
 

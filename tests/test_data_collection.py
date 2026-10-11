@@ -4,8 +4,13 @@ from unittest.mock import Mock
 import pytest
 import requests
 
-from src.data_collection import collect_season, fetch_page, inspect_records, parse_matches, save_raw_data
-
+from src.data_collection import (
+    collect_season,
+    fetch_page,
+    inspect_records,
+    parse_matches,
+    save_raw_data,
+)
 
 SYNTHETIC_CSV = (
     "Date,HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,HS,AS,HST,AST,HC,AC\n"
@@ -45,7 +50,9 @@ def test_parse_matches_rejects_unsupported_season() -> None:
         ),
     ],
 )
-def test_parse_matches_rejects_invalid_or_incomplete_input(csv_text: str, error_message: str) -> None:
+def test_parse_matches_rejects_invalid_or_incomplete_input(
+    csv_text: str, error_message: str
+) -> None:
     with pytest.raises(ValueError, match=error_message):
         parse_matches(csv_text, "2025/26")
 
@@ -53,15 +60,21 @@ def test_parse_matches_rejects_invalid_or_incomplete_input(csv_text: str, error_
 def test_fetch_page_wraps_http_failures(monkeypatch: pytest.MonkeyPatch) -> None:
     response = Mock()
     response.raise_for_status.side_effect = requests.HTTPError("503 Server Error")
-    monkeypatch.setattr("src.data_collection.requests.get", lambda *args, **kwargs: response)
+    monkeypatch.setattr(
+        "src.data_collection.requests.get", lambda *args, **kwargs: response
+    )
 
     with pytest.raises(RuntimeError, match="Failed to fetch source URL"):
         fetch_page("https://example.invalid/matches.csv")
 
 
-def test_fetch_page_enforces_minimum_request_interval(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_fetch_page_enforces_minimum_request_interval(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     response = Mock(text="csv content")
-    monkeypatch.setattr("src.data_collection.requests.get", lambda *args, **kwargs: response)
+    monkeypatch.setattr(
+        "src.data_collection.requests.get", lambda *args, **kwargs: response
+    )
     monkeypatch.setattr("src.data_collection._last_request_started", 100.0)
     monkeypatch.setattr("src.data_collection.time.monotonic", lambda: 100.25)
     mocked_sleep = Mock()
@@ -79,7 +92,9 @@ def test_collect_season_adds_source_provenance(monkeypatch: pytest.MonkeyPatch) 
 
     assert records[0]["Season"] == "2025/26"
     assert records[0]["Source"] == "Football-Data"
-    assert records[0]["SourceURL"] == "https://www.football-data.co.uk/mmz4281/2526/E0.csv"
+    assert (
+        records[0]["SourceURL"] == "https://www.football-data.co.uk/mmz4281/2526/E0.csv"
+    )
     assert records[0]["CollectionMethod"] == "HTTP CSV download via requests"
     assert records[0]["RetrievedAt"]
     assert records[0]["RetrievedAt"] == records[1]["RetrievedAt"]
@@ -92,7 +107,9 @@ def test_inspect_records_reports_duplicates_blanks_and_incomplete_fixtures() -> 
 
     assert audit["row_count"] == 2
     assert audit["incomplete_fixtures"] == 1
-    assert audit["duplicate_keys"] == [("2025/26", "01/08/25", "Example Home FC", "Example Away FC")]
+    assert audit["duplicate_keys"] == [
+        ("2025/26", "01/08/25", "Example Home FC", "Example Away FC")
+    ]
     assert audit["blank_values"]["FTHG"] == 1
     assert len(records) == 2
 

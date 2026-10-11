@@ -30,7 +30,9 @@ Then generate charts and insights:
 py -m scripts.generate_visualizations
 ```
 
-The script reads every CSV in `data/raw/`, validates and cleans each season with `src.data_pipeline`, removes unfinished matches, normalizes team names, and writes 300-DPI PNGs to `charts/`.
+The script reads every CSV in `data/raw/`, validates and cleans each season with
+`FootballDataProcessor`, removes unfinished matches, normalizes team names, and
+writes 300-DPI PNGs to `charts/`.
 
 Run the focused tests with:
 

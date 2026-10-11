@@ -11,15 +11,33 @@ from typing import Any
 
 import requests
 
-
 SOURCE_NAME = "Football-Data"
 SOURCE_URL_TEMPLATE = "https://www.football-data.co.uk/mmz4281/{season_code}/E0.csv"
 SEASON_CODES = {"2023/24": "2324", "2024/25": "2425", "2025/26": "2526"}
 REQUIRED_COLUMNS = {
-    "Date", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "FTR", "HTHG", "HTAG", "HTR",
-    "HS", "AS", "HST", "AST", "HC", "AC",
+    "Date",
+    "HomeTeam",
+    "AwayTeam",
+    "FTHG",
+    "FTAG",
+    "FTR",
+    "HTHG",
+    "HTAG",
+    "HTR",
+    "HS",
+    "AS",
+    "HST",
+    "AST",
+    "HC",
+    "AC",
 }
-PROVENANCE_COLUMNS = ("Season", "Source", "CollectionMethod", "SourceURL", "RetrievedAt")
+PROVENANCE_COLUMNS = (
+    "Season",
+    "Source",
+    "CollectionMethod",
+    "SourceURL",
+    "RetrievedAt",
+)
 REQUEST_TIMEOUT_SECONDS = 20
 MIN_REQUEST_INTERVAL_SECONDS = 1.0
 USER_AGENT = "PremierLeagueCoursework/1.0"
@@ -37,6 +55,7 @@ def _wait_for_request_slot() -> None:
             if wait_seconds > 0:
                 time.sleep(wait_seconds)
         _last_request_started = time.monotonic()
+
 
 def fetch_page(url: str) -> str:
     """Fetch one source URL with a timeout and explicit HTTP error handling."""
@@ -59,7 +78,9 @@ def fetch_page(url: str) -> str:
 def parse_matches(page_html: str, season: str) -> list[dict[str, Any]]:
     """Parse a verified season CSV without filling incomplete fixture values."""
     if season not in SEASON_CODES:
-        raise ValueError(f"Unsupported season: {season}. Supported seasons: {', '.join(SEASON_CODES)}")
+        raise ValueError(
+            f"Unsupported season: {season}. Supported seasons: {', '.join(SEASON_CODES)}"
+        )
 
     reader = csv.DictReader(io.StringIO(page_html.lstrip("\ufeff")))
     if not reader.fieldnames:
@@ -68,7 +89,9 @@ def parse_matches(page_html: str, season: str) -> list[dict[str, Any]]:
     reader.fieldnames = [field.strip() for field in reader.fieldnames]
     missing_columns = sorted(REQUIRED_COLUMNS - set(reader.fieldnames))
     if missing_columns:
-        raise ValueError(f"CSV is missing required columns: {', '.join(missing_columns)}")
+        raise ValueError(
+            f"CSV is missing required columns: {', '.join(missing_columns)}"
+        )
 
     records: list[dict[str, Any]] = []
     for row_number, row in enumerate(reader, start=2):
@@ -87,19 +110,23 @@ def parse_matches(page_html: str, season: str) -> list[dict[str, Any]]:
 def collect_season(season: str) -> list[dict[str, Any]]:
     """Collect one verified season and attach source provenance to every row."""
     if season not in SEASON_CODES:
-        raise ValueError(f"Unsupported season: {season}. Supported seasons: {', '.join(SEASON_CODES)}")
+        raise ValueError(
+            f"Unsupported season: {season}. Supported seasons: {', '.join(SEASON_CODES)}"
+        )
 
     source_url = SOURCE_URL_TEMPLATE.format(season_code=SEASON_CODES[season])
     page_text = fetch_page(source_url)
     records = parse_matches(page_text, season)
     retrieved_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for record in records:
-        record.update({
-            "Source": SOURCE_NAME,
-            "CollectionMethod": "HTTP CSV download via requests",
-            "SourceURL": source_url,
-            "RetrievedAt": retrieved_at,
-        })
+        record.update(
+            {
+                "Source": SOURCE_NAME,
+                "CollectionMethod": "HTTP CSV download via requests",
+                "SourceURL": source_url,
+                "RetrievedAt": retrieved_at,
+            }
+        )
     return records
 
 

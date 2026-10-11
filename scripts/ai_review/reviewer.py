@@ -20,18 +20,64 @@ def provider_findings(policy: dict[str, str], diff: str) -> tuple[list[Finding],
     model = os.getenv("AI_REVIEW_MODEL")
     endpoint = os.getenv("AI_REVIEW_ENDPOINT")
     if not all((key, provider, model, endpoint)):
-        return [], "AI augmentation skipped: AI_REVIEW_API_KEY, AI_REVIEW_PROVIDER, AI_REVIEW_MODEL, and AI_REVIEW_ENDPOINT are not fully configured."
-    prompt = "Return JSON only: {findings:[{severity,title,file,line,rule,problem,impact,suggested_fix}]}. Review this project policy and diff.\n" + json.dumps(policy) + "\nDIFF:\n" + diff
-    payload = json.dumps({"model": model, "messages": [{"role": "system", "content": "You are an advisory repository reviewer. Do not invent findings."}, {"role": "user", "content": prompt}], "response_format": {"type": "json_object"}}).encode()
+        return (
+            [],
+            "AI augmentation skipped: AI_REVIEW_API_KEY, AI_REVIEW_PROVIDER, AI_REVIEW_MODEL, and AI_REVIEW_ENDPOINT are not fully configured.",
+        )
+    prompt = (
+        "Return JSON only: {findings:[{severity,title,file,line,rule,problem,impact,suggested_fix}]}. Review this project policy and diff.\n"
+        + json.dumps(policy)
+        + "\nDIFF:\n"
+        + diff
+    )
+    payload = json.dumps(
+        {
+            "model": model,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "You are an advisory repository reviewer. Do not invent findings.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            "response_format": {"type": "json_object"},
+        }
+    ).encode()
     try:
-        req = request.Request(endpoint, data=payload, headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"}, method="POST")
+        req = request.Request(
+            endpoint,
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
         response = json.loads(request.urlopen(req, timeout=30).read().decode())
         content = response["choices"][0]["message"]["content"]
         parsed = json.loads(content)
-        findings = [Finding(Severity(item["severity"]), item["title"], item["file"], int(item["line"]), item["rule"], item["problem"], item["impact"], item["suggested_fix"]) for item in parsed.get("findings", [])]
-        return findings, f"AI augmentation completed using configured provider `{provider}` and model `{model}`."
+        findings = [
+            Finding(
+                Severity(item["severity"]),
+                item["title"],
+                item["file"],
+                int(item["line"]),
+                item["rule"],
+                item["problem"],
+                item["impact"],
+                item["suggested_fix"],
+            )
+            for item in parsed.get("findings", [])
+        ]
+        return (
+            findings,
+            f"AI augmentation completed using configured provider `{provider}` and model `{model}`.",
+        )
     except (KeyError, TypeError, ValueError, OSError) as error:
-        return [], f"AI augmentation unavailable: provider response could not be safely parsed ({type(error).__name__})."
+        return (
+            [],
+            f"AI augmentation unavailable: provider response could not be safely parsed ({type(error).__name__}).",
+        )
 
 
 def run(diff: str, root: Path | None = None, mock: bool = False) -> Review:
@@ -40,8 +86,17 @@ def run(diff: str, root: Path | None = None, mock: bool = False) -> Review:
     rules = load_rules(base)
     patches = parse_unified_diff(diff)
     findings = evaluate(patches, rules)
-    ai_findings, note = ([], "Mock mode: no external AI provider was called.") if mock else provider_findings(rules, diff)
-    return Review(findings + ai_findings, [patch.path for patch in patches], list(RULE_FILES), note)
+    ai_findings, note = (
+        ([], "Mock mode: no external AI provider was called.")
+        if mock
+        else provider_findings(rules, diff)
+    )
+    return Review(
+        findings + ai_findings,
+        [patch.path for patch in patches],
+        list(RULE_FILES),
+        note,
+    )
 
 
 def main() -> int:

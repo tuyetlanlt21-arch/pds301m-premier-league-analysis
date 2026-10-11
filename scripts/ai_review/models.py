@@ -38,7 +38,10 @@ class Review:
 
     @property
     def result(self) -> ReviewResult:
-        if any(item.severity in {Severity.CRITICAL, Severity.HIGH} for item in self.findings):
+        if any(
+            item.severity in {Severity.CRITICAL, Severity.HIGH}
+            for item in self.findings
+        ):
             return ReviewResult.BLOCKED
         if self.findings:
             return ReviewResult.PASS_WITH_COMMENTS

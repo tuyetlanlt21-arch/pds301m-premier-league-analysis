@@ -30,13 +30,17 @@ py -m pip install -r requirements-t14.txt
 
 In VS Code, open `notebooks/premier_league_analysis.ipynb`, select the Python environment where these packages were installed, then choose **Restart Kernel → Run All**. The notebook creates or refreshes the figures in `charts/` and the insights file `charts/insights.md`.
 
-To run the visualizations and create the T15 report from the command line instead:
+To run the full P6 processing workflow, refresh the visualizations, export the
+processed CSVs, and create the report from the command line:
 
 ```powershell
 py -m scripts.generate_final_report
 ```
 
-This command cleans the current CSV files, calculates report findings in a temporary folder, and writes `report/final_report.md`. It leaves the existing T13 PNGs and `charts/insights.md` unchanged. Run the notebook or `py -m scripts.generate_visualizations` separately when you want to refresh T13 charts.
+This command cleans the current CSV files, writes
+`data/processed/cleaned_matches.csv` and `data/processed/team_summary.csv`,
+refreshes the PNG charts and `charts/insights.md`, and writes
+`report/final_report.md`. `main.py` runs the same offline workflow.
 
 Run the project quality checks with:
 
@@ -57,6 +61,7 @@ py -m unittest discover -s tests -v
 ├── scripts/
 │   ├── generate_visualizations.py    # Chart and T13 insights generation
 │   └── generate_final_report.py      # Charts + T15 report command
+├── data/processed/                   # Generated cleaned and team-summary CSVs
 ├── charts/                           # Generated PNGs and insights.md
 ├── report/final_report.md            # Generated mini report
 ├── tests/                             # Visualization, pipeline, and report tests
