@@ -3,7 +3,6 @@
 from pathlib import Path
 import re
 
-
 RULE_FILES = (
     "docs/PROJECT_RULES.md",
     "docs/DATA_RULES.md",
@@ -31,4 +30,6 @@ def load_rules(root: Path | None = None) -> dict[str, str]:
 def contract_fields(rules: dict[str, str]) -> set[str]:
     """Extract documented raw-schema field names from the contract table."""
     contract = rules["docs/DATA_CONTRACT.md"]
-    return set(re.findall(r"^\|\s*([A-Za-z][A-Za-z0-9_]*)\s*\|", contract, re.MULTILINE))
+    return set(
+        re.findall(r"^\|\s*([A-Za-z][A-Za-z0-9_]*)\s*\|", contract, re.MULTILINE)
+    )

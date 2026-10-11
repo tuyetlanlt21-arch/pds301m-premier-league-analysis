@@ -7,7 +7,8 @@ The notebook follows the P6 analysis story: Introduction, RQs, Sources, Basics, 
 ## Files in the package
 
 - `notebooks/premier_league_analysis.ipynb` — complete analysis notebook.
-- `src/data_pipeline.py` — reusable offline CSV loading, data checks, cleaning, features, and basic/data-structure helpers.
+- `src/processor.py` — the P6 `FootballDataProcessor` workflow for loading, cleaning, normalizing, feature engineering, and exporting processed CSVs.
+- `src/data_pipeline.py` — reusable compatibility helpers for notebook-level loading, checks, cleaning, and summaries.
 - `src/analysis.py` — reusable T13 chart functions, with an informative scatter placeholder when optional shot data is unavailable.
 - `scripts/generate_visualizations.py` — chart insight report writer used by the notebook.
 - `tests/test_analysis_visualizations.py` — T13 chart tests.

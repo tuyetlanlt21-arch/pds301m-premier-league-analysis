@@ -106,6 +106,8 @@ def load_raw_csvs(raw_dir: str | Path) -> tuple[pd.DataFrame, list[Path]]:
                     "or use a filename containing a season code such as 2324."
                 )
             frame["Season"] = season
+        # Defragment wide Football-Data frames before adding project metadata.
+        frame = frame.copy()
         frame["SourceFile"] = path.name
         frames.append(frame)
     return pd.concat(frames, ignore_index=True, sort=False), paths

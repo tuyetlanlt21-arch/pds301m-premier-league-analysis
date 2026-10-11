@@ -8,7 +8,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.data_collection import SEASON_CODES, collect_season, inspect_records, save_raw_data
+from src.data_collection import (
+    SEASON_CODES,
+    collect_season,
+    inspect_records,
+    save_raw_data,
+)
 
 
 def main() -> int:
@@ -33,10 +38,14 @@ def main() -> int:
             print(f"Collection failed for {season}: {error}", file=sys.stderr)
             return 1
 
-        print(f"Saved {season}: {audit['row_count']} raw rows -> {destination.relative_to(ROOT)}")
+        print(
+            f"Saved {season}: {audit['row_count']} raw rows -> {destination.relative_to(ROOT)}"
+        )
         print(f"Incomplete fixtures: {audit['incomplete_fixtures']}")
         print(f"Duplicate match keys: {len(audit['duplicate_keys'])}")
-        nonzero_blanks = {key: value for key, value in audit["blank_values"].items() if value}
+        nonzero_blanks = {
+            key: value for key, value in audit["blank_values"].items() if value
+        }
         print(f"Columns with blank values: {nonzero_blanks or 'none'}")
 
     return 0
