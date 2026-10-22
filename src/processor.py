@@ -5,7 +5,7 @@ from typing import Any
 
 import pandas as pd
 
-from .data_pipeline import load_raw_csvs
+from .data_pipeline import _clean_column_name, load_raw_csvs
 
 REQUIRED_COLUMNS: set[str] = {
     "Date",
@@ -46,13 +46,16 @@ TEAM_NAME_MAPPING = {
 class FootballDataProcessor:
     """Define the intended raw-to-processed data lifecycle."""
 
+    def load_data(self, source: Path) -> pd.DataFrame:
+        """Load one CSV without modifying the source file."""
+        frame = pd.read_csv(source, encoding="utf-8-sig", low_memory=False)
+        frame.columns = [_clean_column_name(column) for column in frame.columns]
+        return frame
+
     def load_csvs(self, raw_dir: Path) -> tuple[pd.DataFrame, list[Path]]:
         """Load all saved season CSVs and attach inferred season metadata."""
         return load_raw_csvs(raw_dir)
 
-    def load_data(self, path: Path) -> pd.DataFrame:
-        """Load a collected raw CSV dataset without modifying the source file."""
-        return pd.read_csv(path)
 
     def validate_data(self, data: pd.DataFrame) -> pd.DataFrame:
         """Validate schema and required fixture identity without changing data."""

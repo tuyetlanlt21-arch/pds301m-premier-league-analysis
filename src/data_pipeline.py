@@ -15,6 +15,11 @@ OPTIONAL_NUMERIC_COLUMNS = ["HTHG", "HTAG", "HS", "AS", "HST", "AST", "HC", "AC"
 RESULTS = ("H", "D", "A")
 
 
+def _clean_column_name(column: object) -> str:
+    """Normalize UTF-8 BOM and common mojibake variants in source headers."""
+    return (str(column).strip().replace("ï»¿", "").replace("Ã¯Â»Â¿", "").lstrip("\ufeff"))
+
+
 def total_goals(home_goals: int | float, away_goals: int | float) -> int | float:
     """Return the combined full-time goals for a match."""
     return home_goals + away_goals
@@ -97,7 +102,7 @@ def load_raw_csvs(raw_dir: str | Path) -> tuple[pd.DataFrame, list[Path]]:
     frames: list[pd.DataFrame] = []
     for path in paths:
         frame = pd.read_csv(path, encoding="utf-8-sig", low_memory=False)
-        frame.columns = [str(column).strip().lstrip("\ufeff") for column in frame.columns]
+        frame.columns = [_clean_column_name(column) for column in frame.columns]
         if "Season" not in frame.columns:
             season = _season_from_path(path)
             if season is None:
@@ -145,7 +150,8 @@ def clean_matches(data: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, int]]:
     if missing:
         raise ValueError(f"Missing required columns: {', '.join(missing)}")
     clean = data.copy()
-    clean.columns = [str(column).strip().lstrip("\ufeff") for column in clean.columns]
+    clean.columns = [_clean_column_name(column) for column in clean.columns]
+    clean = clean.loc[:, ~clean.columns.duplicated()].copy()
     for column in ("HomeTeam", "AwayTeam"):
         clean[column] = clean[column].astype("string").str.strip().str.replace(r"\s+", " ", regex=True)
         clean[column] = clean[column].replace("", pd.NA)

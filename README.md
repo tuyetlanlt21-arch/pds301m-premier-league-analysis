@@ -42,6 +42,17 @@ This command cleans the current CSV files, writes
 refreshes the PNG charts and `charts/insights.md`, and writes
 `report/final_report.md`. `main.py` runs the same offline workflow.
 
+For the expanded, dashboard-ready analytics contract, run:
+
+```powershell
+py -m scripts.generate_analytics
+```
+
+This writes CSV and JSON tables to `data/processed/analytics/`, including the
+cleaned match, team-match, team-season, home/away, attacking, defensive, form,
+half-time/full-time, goal-distribution, and season summaries. See
+`docs/ANALYTICS_PIPELINE.md` for field definitions, denominators and null rules.
+
 Run the project quality checks with:
 
 ```powershell
