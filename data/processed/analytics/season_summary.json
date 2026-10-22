@@ -1,0 +1,44 @@
+[
+  {
+    "Season": "2023/24",
+    "CompletedMatches": 380,
+    "ParticipatingTeams": 20,
+    "ExpectedMatchesForParticipatingTeams": 380,
+    "IsCompleteSeason": true,
+    "GoalsPerMatch": 3.278947368421053,
+    "HomeWinRatePct": 46.05263157894737,
+    "DrawRatePct": 21.578947368421055,
+    "AwayWinRatePct": 32.36842105263158,
+    "HomeGoalsPerMatch": 1.8,
+    "AwayGoalsPerMatch": 1.4789473684210526,
+    "TeamRecords": 760
+  },
+  {
+    "Season": "2024/25",
+    "CompletedMatches": 380,
+    "ParticipatingTeams": 20,
+    "ExpectedMatchesForParticipatingTeams": 380,
+    "IsCompleteSeason": true,
+    "GoalsPerMatch": 2.9342105263157894,
+    "HomeWinRatePct": 40.78947368421053,
+    "DrawRatePct": 24.47368421052632,
+    "AwayWinRatePct": 34.73684210526316,
+    "HomeGoalsPerMatch": 1.513157894736842,
+    "AwayGoalsPerMatch": 1.4210526315789473,
+    "TeamRecords": 760
+  },
+  {
+    "Season": "2025/26",
+    "CompletedMatches": 380,
+    "ParticipatingTeams": 20,
+    "ExpectedMatchesForParticipatingTeams": 380,
+    "IsCompleteSeason": true,
+    "GoalsPerMatch": 2.75,
+    "HomeWinRatePct": 42.63157894736842,
+    "DrawRatePct": 27.368421052631582,
+    "AwayWinRatePct": 30.0,
+    "HomeGoalsPerMatch": 1.5263157894736843,
+    "AwayGoalsPerMatch": 1.2236842105263157,
+    "TeamRecords": 760
+  }
+]
