@@ -1,0 +1,30 @@
+[
+  {
+    "Metric": "TotalGoals",
+    "TotalGoals": 1.0,
+    "TotalShots": 0.22024329111613516,
+    "TotalShotsOnTarget": 0.5333158199722047,
+    "TotalCorners": -0.005447220155877228
+  },
+  {
+    "Metric": "TotalShots",
+    "TotalGoals": 0.22024329111613516,
+    "TotalShots": 1.0,
+    "TotalShotsOnTarget": 0.6087438121245007,
+    "TotalCorners": 0.3014745334640186
+  },
+  {
+    "Metric": "TotalShotsOnTarget",
+    "TotalGoals": 0.5333158199722047,
+    "TotalShots": 0.6087438121245007,
+    "TotalShotsOnTarget": 1.0,
+    "TotalCorners": 0.1479301500948205
+  },
+  {
+    "Metric": "TotalCorners",
+    "TotalGoals": -0.005447220155877228,
+    "TotalShots": 0.3014745334640186,
+    "TotalShotsOnTarget": 0.1479301500948205,
+    "TotalCorners": 1.0
+  }
+]

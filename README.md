@@ -53,6 +53,23 @@ cleaned match, team-match, team-season, home/away, attacking, defensive, form,
 half-time/full-time, goal-distribution, and season summaries. See
 `docs/ANALYTICS_PIPELINE.md` for field definitions, denominators and null rules.
 
+## Premier Intelligence frontend
+
+The React + TypeScript + Vite dashboard consumes the generated JSON contract
+from `public/data/`. After regenerating analytics, refresh those assets with
+`Copy-Item data/processed/analytics/*.json public/data/` when the datasets
+change. Run the frontend with:
+
+```powershell
+npm install
+npm run dev
+```
+
+Use `npm run typecheck` for TypeScript validation and `npm run build` for the
+production bundle. The interface includes Overview, Team Rankings,
+Attack & Defense, Match Dynamics, Team Comparison, Trends & Statistics, and
+Data Explorer views, with persisted theme and sidebar preferences.
+
 Run the project quality checks with:
 
 ```powershell

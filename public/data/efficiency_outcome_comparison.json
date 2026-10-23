@@ -1,0 +1,23 @@
+[
+  {
+    "FTR": "A",
+    "TotalGoals": 3.051490514905149,
+    "TotalShots": 26.13550135501355,
+    "TotalShotsOnTarget": 9.170731707317072,
+    "TotalCorners": 10.490514905149052
+  },
+  {
+    "FTR": "D",
+    "TotalGoals": 2.3942652329749103,
+    "TotalShots": 26.43727598566308,
+    "TotalShotsOnTarget": 8.620071684587813,
+    "TotalCorners": 10.512544802867383
+  },
+  {
+    "FTR": "H",
+    "TotalGoals": 3.2764227642276422,
+    "TotalShots": 26.036585365853657,
+    "TotalShotsOnTarget": 9.351626016260163,
+    "TotalCorners": 10.215447154471544
+  }
+]

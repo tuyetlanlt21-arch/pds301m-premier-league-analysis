@@ -1,0 +1,22 @@
+[
+  {
+    "Metric": "Mean",
+    "Value": 2.987719298245614
+  },
+  {
+    "Metric": "Median",
+    "Value": 3.0
+  },
+  {
+    "Metric": "Mode",
+    "Value": 2.0
+  },
+  {
+    "Metric": "StandardDeviation",
+    "Value": 1.628819700691917
+  },
+  {
+    "Metric": "HighScoringRatePct",
+    "Value": 35.43859649122807
+  }
+]
