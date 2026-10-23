@@ -1,0 +1,32 @@
+[
+  {
+    "Result": "A",
+    "Matches": 861,
+    "ShotDominance": 296,
+    "SOTDominance": 163,
+    "WinsDespiteShotDisadvantage": 0,
+    "LossesDespiteShotAdvantage": 296,
+    "WinsDespiteSOTDisadvantage": 0,
+    "LossesDespiteSOTAdvantage": 163
+  },
+  {
+    "Result": "D",
+    "Matches": 558,
+    "ShotDominance": 263,
+    "SOTDominance": 237,
+    "WinsDespiteShotDisadvantage": 0,
+    "LossesDespiteShotAdvantage": 0,
+    "WinsDespiteSOTDisadvantage": 0,
+    "LossesDespiteSOTAdvantage": 0
+  },
+  {
+    "Result": "H",
+    "Matches": 861,
+    "ShotDominance": 532,
+    "SOTDominance": 625,
+    "WinsDespiteShotDisadvantage": 296,
+    "LossesDespiteShotAdvantage": 0,
+    "WinsDespiteSOTDisadvantage": 163,
+    "LossesDespiteSOTAdvantage": 0
+  }
+]

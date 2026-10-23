@@ -1,5 +1,10 @@
 .venv/
 __pycache__/
+node_modules/
+dist/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
 .pytest_cache/
 *.pyc
 .ipynb_checkpoints/

@@ -1,0 +1,61 @@
+.page-wrap { padding-top: 32px; padding-bottom: 64px; }
+.page-heading { margin-bottom: 32px; }
+.content-grid { row-gap: 32px; }
+.toolbar { margin-bottom: 24px; }
+.chart-panel, .ranking-panel, .table-panel, .comparison-panel { padding: 28px; }
+.section-title { margin-bottom: 20px; }
+.chart-footnote { margin-top: 20px; }
+.matrix { display: none; }
+
+.transition-card {
+  min-width: 0;
+  padding: 28px;
+  align-self: start;
+}
+
+.transition-matrix {
+  display: grid;
+  grid-template-columns: minmax(120px, .9fr) repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.transition-matrix__corner { min-height: 34px; }
+.transition-matrix__header,
+.transition-matrix__row-label {
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 650;
+}
+.transition-matrix__header { justify-content: center; text-align: center; }
+.transition-matrix__row-label { padding-right: 8px; }
+.transition-matrix__cell {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) calc(18% + var(--heat) * 62%), var(--surface));
+  color: var(--text);
+  font-size: 22px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.transition-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.heat-legend { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.heat-legend i, .heat-legend b { display: inline-block; width: 14px; height: 14px; border-radius: 4px; background: var(--surface-subtle); border: 1px solid var(--line); }
+.heat-legend b { background: var(--accent); border-color: var(--accent); }
+@media (max-width: 1100px) { .transition-footer { align-items: flex-start; flex-direction: column; } .transition-matrix { gap: 10px; } }
+@media (max-width: 720px) { .transition-card { padding: 20px; overflow-x: auto; } .transition-matrix { min-width: 560px; } .transition-footer { font-size: 12px; } }
